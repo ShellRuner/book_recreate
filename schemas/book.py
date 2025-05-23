@@ -36,3 +36,4 @@ class Response(BaseModel):
     has_error: bool = False
     error_message: Optional[str] = None
     data: Optional[Book | Books] = None
+    status_code: int = 200

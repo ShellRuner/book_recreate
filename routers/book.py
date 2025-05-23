@@ -11,23 +11,24 @@ from services.book import book_service
 book_router = APIRouter()
 
 
-@book_router.get("")
+@book_router.get("/books")
 def get_books():
     return books
 
 
-@book_router.get("/{id}")
+@book_router.get("/books/{id}")
 def get_book_by_id(id: UUID):
     book = book_service.get_book_by_id(id)
     if not book:
-        raise HTTPException(status_code=404, detail="book not found.")
+        # return {status_code : 404, detail  "book not found."}
+        return Response(message="book not found", has_error=True, status_code=404)
     return book
 
 
-@book_router.post("")
+@book_router.post("/books")
 def add_book(book_in: BookCreate):
     book = book_service.create_book(book_in)
-    return Response(message="Book added successfully", data=book)
+    return Response(message="Book added successfully", data=book.model_dump())
 
 
 @book_router.put("/{id}")
@@ -50,3 +51,4 @@ def delete_book(id: UUID):
             detail=f"Book with id: {id} not found"
         )
     return Response(message="Book deleted successfully")
+
